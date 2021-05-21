@@ -10,8 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.9",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "nodemon": "^2.0.7"
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.2.5",
+    "nodemon": "^2.0.7",
+    "puppeteer": "^9.1.1",
+    "sequelize": "^4.0.0-2"
   }
 }
