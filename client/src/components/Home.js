@@ -10,10 +10,11 @@ import Loader from "./Loader";
 
 const modelStyle = {
   overlay: {
-    backgroundColor: "grey",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   content: {
     color: "blue",
+    inset: '25%'
   },
 };
 
@@ -29,16 +30,22 @@ const Home = (props) => {
 
   const { setUserData } = useContext(UserContext);
 
-  useEffect(async () => {
-    await getArticals().then((data) => {
-      setArticals(data?.data);
-      setLoder(false);
-    });
+  useEffect(() => {
+    fetchArticles();
   }, []);
+
+  const fetchArticles = async () => {
+    const result = await getArticals();
+    if (result) {
+      setArticals(result?.data);
+      setLoder(false);
+    }
+  }
 
   const modelhandler = () => {
     setModalIsOpen(false);
   };
+
   const readArtModelhandler = () => {
     setReadArtModelIsOPen(false);
   };
@@ -75,8 +82,8 @@ const Home = (props) => {
     <>
       <div>
         <div>{loader && <Loader />}</div>
-        <div>
-          {!loader &&
+        <div className="d-flex flex-wrap">
+          {!loader && articals &&
             articals.map((artical) => (
               <Articals
                 key={artical.id}
@@ -88,17 +95,18 @@ const Home = (props) => {
       </div>
 
       <Modal
+        dialogClassName="modal-50w"
+        size="sm"
         isOpen={modalIsOpen}
         onRequestClose={modelhandler}
         style={modelStyle}
       >
-        <div>
-          <button onClick={modelhandler}>Close</button>
+        <div className="text-right">
+          <button className="border-0 bg-transparent font-weight-bold" onClick={modelhandler} style={{ fontSize: '3rem' }}>&times;</button>
         </div>
-
         <div>
-          {formType.loginForm && <LoginForm modelhandler={modelhandler} />}
-          {formType.signUpForm && <SignUpForm modelhandler={modelhandler} />}
+          {formType.loginForm && <LoginForm  {...props} modelhandler={modelhandler} />}
+          {formType.signUpForm && <SignUpForm  {...props} modelhandler={modelhandler} />}
         </div>
       </Modal>
 
@@ -107,8 +115,8 @@ const Home = (props) => {
         onRequestClose={readArtModelhandler}
         style={modelStyle}
       >
-        <div>
-          <button onClick={readArtModelhandler}>Close</button>
+        <div className="text-right">
+          <button className="border-0 bg-transparent font-weight-bold" onClick={readArtModelhandler} style={{ fontSize: '3rem' }}>&times;</button>
         </div>
         <div>
           <Artical artical={artical} />

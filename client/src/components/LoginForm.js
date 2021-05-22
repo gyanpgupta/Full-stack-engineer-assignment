@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import loginServies from "../services/loginApi";
 import UserContext from "./hooks.js/userContext";
@@ -7,22 +7,29 @@ const initialUserCredState = {
   email: "",
   password: "",
 };
+
 const initialErrorState = {
   error: false,
   message: "",
 };
-const LoginForm = (props) => {
-  const { modelhandler } = props;
 
+const LoginForm = (props) => {
+  const { modelhandler, setFormType, setModalIsOpen, formType } = props;
+  
   const [userCred, setUserCred] = useState(initialUserCredState);
   const [errors, setErrors] = useState(initialErrorState);
 
   const user = useContext(UserContext);
 
+  const signUpHandler = () => {
+    setFormType({ ...formType, signUpForm: true, loginForm: false });
+    setModalIsOpen(true);
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     await loginServies(userCred).then((res) => {
-      if (res.status == 1) {
+      if (res.status === 1) {
         setErrors(initialErrorState);
         sessionStorage.setItem("token", res.token);
         sessionStorage.setItem("name", res.userName);
@@ -49,10 +56,10 @@ const LoginForm = (props) => {
           </ul>
         </div>
       )}
-      <div>
+      <div className="text-center">
         <h2>Login</h2>
       </div>
-      <div>
+      <div className="m-auto w-50">
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -76,8 +83,10 @@ const LoginForm = (props) => {
               onChange={onchangeHandler}
             />
           </Form.Group>
-
-          <Button variant="primary" type="submit">
+          <Button className="border-0 bg-white text-body pb-3 px-0 " onClick={signUpHandler}>
+            Doesn't have an account, create one
+          </Button>
+          <Button variant="primary" type="submit" className="w-100">
             Submit
           </Button>
         </Form>

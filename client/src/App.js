@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "./App.css";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import UserContext from "./components/hooks.js/userContext";

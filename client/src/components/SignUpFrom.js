@@ -2,15 +2,10 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import signUpServies from "../services/signUpApi";
 
-const initialUserCredState = {
-  name: null,
-  email: null,
-  password: null,
-};
 const initialErrorState = { error: false, message: "" };
 
 const SignUpFrom = (props) => {
-  const { modelhandler } = props;
+  const { modelhandler, setFormType, setModalIsOpen, formType } = props;
 
   const [userCred, setUserCred] = useState(null);
   const [errors, setErrors] = useState(initialErrorState);
@@ -32,6 +27,11 @@ const SignUpFrom = (props) => {
       });
   };
 
+  const loginModelhandler = () => {
+    setFormType({ ...formType, signUpForm: false, loginForm: true });
+    setModalIsOpen(true);
+  };
+
   const onchangeHandler = (e) => {
     setUserCred({ ...userCred, [e.target.name]: e.target.value });
   };
@@ -47,10 +47,10 @@ const SignUpFrom = (props) => {
           </ul>
         </div>
       )}
-      <div>
+      <div className="text-center">
         <h2>Sign Up</h2>
       </div>
-      <div>
+      <div className="m-auto w-50">
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="formBasicUserName">
             <Form.Label>Name</Form.Label>
@@ -84,8 +84,10 @@ const SignUpFrom = (props) => {
               onChange={onchangeHandler}
             />
           </Form.Group>
-
-          <Button variant="primary" type="submit">
+          <Button className="border-0 bg-white text-body pb-3 px-0" onClick={loginModelhandler}>
+            Already have an account, Please login
+          </Button>
+          <Button variant="primary" type="submit" className="w-100">
             Submit
           </Button>
         </Form>
