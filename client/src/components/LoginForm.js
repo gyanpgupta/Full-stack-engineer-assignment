@@ -15,7 +15,7 @@ const initialErrorState = {
 
 const LoginForm = (props) => {
   const { modelhandler, setFormType, setModalIsOpen, formType } = props;
-  
+
   const [userCred, setUserCred] = useState(initialUserCredState);
   const [errors, setErrors] = useState(initialErrorState);
 
@@ -28,17 +28,24 @@ const LoginForm = (props) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    await loginServies(userCred).then((res) => {
-      if (res.status === 1) {
-        setErrors(initialErrorState);
-        sessionStorage.setItem("token", res.token);
-        sessionStorage.setItem("name", res.userName);
-        user.setUserData({ name: res.userName, token: res.token });
-        modelhandler();
-      } else {
-        setErrors({ error: true, message: res.message });
-      }
-    });
+    await loginServies(userCred)
+      .then((res) => {
+        if (res?.status === 1) {
+          setErrors(initialErrorState);
+          sessionStorage.setItem("token", res.token);
+          sessionStorage.setItem("name", res.userName);
+          user.setUserData({ name: res.userName, token: res.token });
+          modelhandler();
+        } else {
+          setErrors({ error: true, message: res?.message });
+        }
+      })
+      .catch((err) => {
+        setErrors({
+          error: true,
+          message: "Somthing went wrong ,Please try again.",
+        });
+      });
   };
 
   const onchangeHandler = (e) => {
@@ -83,7 +90,10 @@ const LoginForm = (props) => {
               onChange={onchangeHandler}
             />
           </Form.Group>
-          <Button className="border-0 bg-white text-body pb-3 px-0 " onClick={signUpHandler}>
+          <Button
+            className="border-0 bg-white text-body pb-3 px-0 "
+            onClick={signUpHandler}
+          >
             Doesn't have an account, create one
           </Button>
           <Button variant="primary" type="submit" className="w-100">

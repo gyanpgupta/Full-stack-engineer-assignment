@@ -5,6 +5,7 @@ const signUpServies = async (data) => {
     .post(`${process.env.REACT_APP_URL}/sign-up`, data)
     .then((resData) => resData.data)
     .catch((err) => {
+      console.log("......err", err);
       throw err;
     });
 };

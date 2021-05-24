@@ -8,17 +8,24 @@ exports.sign_up = async (req, res) => {
   const { password, email, name } = req.body;
 
   await bcrypt
-    .hash(password, process.env.SALTROUNDS)
+
+    .hash(password, parseInt(process.env.SALTROUNDS))
     .then(function (hash) {
       UserModel.create({
         name,
         email,
         password: hash,
       })
-        .then((data) => res.send(data))
-        .catch((err) => res.status(400).send(err));
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => {
+          res.status(400).send(err);
+        });
     })
-    .catch((err) => res.status(400).send(err));
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 };
 
 exports.login = async (req, res) => {
@@ -42,7 +49,10 @@ exports.login = async (req, res) => {
                 token,
               });
             } else {
-              res.sendStatus(403);
+              res.send({
+                status: 0,
+                message: "You have enter wrong credentials.",
+              });
             }
           });
       }

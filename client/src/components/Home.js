@@ -10,11 +10,10 @@ import Loader from "./Loader";
 
 const modelStyle = {
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   content: {
     color: "blue",
-    inset: '25%'
   },
 };
 
@@ -40,7 +39,7 @@ const Home = (props) => {
       setArticals(result?.data);
       setLoder(false);
     }
-  }
+  };
 
   const modelhandler = () => {
     setModalIsOpen(false);
@@ -83,7 +82,8 @@ const Home = (props) => {
       <div>
         <div>{loader && <Loader />}</div>
         <div className="d-flex flex-wrap">
-          {!loader && articals &&
+          {!loader &&
+            articals &&
             articals.map((artical) => (
               <Articals
                 key={artical.id}
@@ -102,11 +102,21 @@ const Home = (props) => {
         style={modelStyle}
       >
         <div className="text-right">
-          <button className="border-0 bg-transparent font-weight-bold" onClick={modelhandler} style={{ fontSize: '3rem' }}>&times;</button>
+          <button
+            className="border-0 bg-transparent font-weight-bold"
+            onClick={modelhandler}
+            style={{ fontSize: "3rem" }}
+          >
+            &times;
+          </button>
         </div>
         <div>
-          {formType.loginForm && <LoginForm  {...props} modelhandler={modelhandler} />}
-          {formType.signUpForm && <SignUpForm  {...props} modelhandler={modelhandler} />}
+          {formType.loginForm && (
+            <LoginForm {...props} modelhandler={modelhandler} />
+          )}
+          {formType.signUpForm && (
+            <SignUpForm {...props} modelhandler={modelhandler} />
+          )}
         </div>
       </Modal>
 
@@ -116,7 +126,13 @@ const Home = (props) => {
         style={modelStyle}
       >
         <div className="text-right">
-          <button className="border-0 bg-transparent font-weight-bold" onClick={readArtModelhandler} style={{ fontSize: '3rem' }}>&times;</button>
+          <button
+            className="border-0 bg-transparent font-weight-bold"
+            onClick={readArtModelhandler}
+            style={{ fontSize: "3rem" }}
+          >
+            &times;
+          </button>
         </div>
         <div>
           <Artical artical={artical} />
