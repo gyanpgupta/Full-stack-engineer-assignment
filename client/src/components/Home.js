@@ -1,26 +1,27 @@
-import React, { useEffect, useState, useContext } from "react";
-import Modal from "react-modal";
-import { getArtical, getArticals } from "../services/articalsApi";
-import LoginForm from "./LoginForm";
-import SignUpForm from "./SignUpFrom";
-import Articals from "./Articals";
-import Artical from "./Artical";
-import UserContext from "./hooks.js/userContext";
-import Loader from "./Loader";
+import React, { useEffect, useState, useContext } from 'react';
+import Modal from 'react-modal';
+import { getArtical, getArticals } from '../services/articalsApi';
+import LoginForm from './LoginForm';
+import SignUpForm from './SignUpFrom';
+import Articals from './Articals';
+import Artical from './Artical';
+import UserContext from './hooks.js/userContext';
+import Loader from './Loader';
 
 const modelStyle = {
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   content: {
-    color: "blue",
+    color: 'blue',
   },
 };
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
 const Home = (props) => {
-  const { modalIsOpen, setModalIsOpen, formType, setFormType } = props;
+  const { modalIsOpen, setModalIsOpen, formType, setFormType, logOutHandler } =
+    props;
 
   const [articals, setArticals] = useState([]);
   const [artical, setArtical] = useState(null);
@@ -57,7 +58,7 @@ const Home = (props) => {
         setReadArtModelIsOPen(true);
       })
       .catch((err) => {
-        alert("You are not Autharized Your,Please login first.");
+        alert('You are not Autharized Your,Please login first.');
         sessionStorage.clear();
         setUserData({ name: null, token: null });
         setFormType({ loginForm: true, signUpForm: false });
@@ -65,15 +66,16 @@ const Home = (props) => {
       });
   };
 
-  const checkUserLogedInOrNot = (link) => {
-    const token = sessionStorage.getItem("token");
-    const name = sessionStorage.getItem("name");
+  const checkUserLogedInOrNot = async (link) => {
+    const token = sessionStorage.getItem('token');
+    const name = sessionStorage.getItem('name');
 
-    if (!token && !name) {
+    if (!token || !name) {
       setFormType({ loginForm: true, signUpForm: false });
       setModalIsOpen(true);
+      await logOutHandler();
     } else {
-      fatchArtical({ link, token });
+      await fatchArtical({ link, token });
     }
   };
 
@@ -81,7 +83,7 @@ const Home = (props) => {
     <>
       <div>
         <div>{loader && <Loader />}</div>
-        <div className="d-flex flex-wrap">
+        <div className='d-flex flex-wrap'>
           {!loader &&
             articals &&
             articals.map((artical) => (
@@ -95,17 +97,17 @@ const Home = (props) => {
       </div>
 
       <Modal
-        dialogClassName="modal-50w"
-        size="sm"
+        dialogClassName='modal-50w'
+        size='sm'
         isOpen={modalIsOpen}
         onRequestClose={modelhandler}
         style={modelStyle}
       >
-        <div className="text-right">
+        <div className='text-right'>
           <button
-            className="border-0 bg-transparent font-weight-bold"
+            className='border-0 bg-transparent font-weight-bold'
             onClick={modelhandler}
-            style={{ fontSize: "3rem" }}
+            style={{ fontSize: '3rem' }}
           >
             &times;
           </button>
@@ -125,11 +127,11 @@ const Home = (props) => {
         onRequestClose={readArtModelhandler}
         style={modelStyle}
       >
-        <div className="text-right">
+        <div className='text-right'>
           <button
-            className="border-0 bg-transparent font-weight-bold"
+            className='border-0 bg-transparent font-weight-bold'
             onClick={readArtModelhandler}
-            style={{ fontSize: "3rem" }}
+            style={{ fontSize: '3rem' }}
           >
             &times;
           </button>

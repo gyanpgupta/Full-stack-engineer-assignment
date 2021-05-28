@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { Card, Nav } from "react-bootstrap";
-import UserContext from "./hooks.js/userContext";
+import React, { useContext } from 'react';
+import { Card, Nav } from 'react-bootstrap';
+import UserContext from './hooks.js/userContext';
 
-const Header = ({ setModalIsOpen, setFormType, formType }) => {
+const Header = ({ setModalIsOpen, setFormType, formType, logOutHandler }) => {
   const { userdata, setUserData } = useContext(UserContext);
 
   const loginModelhandler = () => {
@@ -10,8 +10,8 @@ const Header = ({ setModalIsOpen, setFormType, formType }) => {
     setModalIsOpen(true);
   };
 
-  const logOutHandler = () => {
-    sessionStorage.clear();
+  const onLogOut = async () => {
+    await logOutHandler();
     setUserData({ name: null, token: null });
   };
 
@@ -19,15 +19,15 @@ const Header = ({ setModalIsOpen, setFormType, formType }) => {
     <>
       <Card>
         <Card.Header>
-          <Nav className="justify-content-end">
+          <Nav className='justify-content-end'>
             <Nav.Item>
-              <Nav.Link href="#" onClick={!userdata.name && loginModelhandler}>
-                {userdata.name || "Login"}
+              <Nav.Link href='#' onClick={!userdata.name && loginModelhandler}>
+                {userdata.name || 'Login'}
               </Nav.Link>
             </Nav.Item>
             {userdata.name && (
               <Nav.Item>
-                <Nav.Link href="#" onClick={logOutHandler}>
+                <Nav.Link href='#' onClick={onLogOut}>
                   log Out
                 </Nav.Link>
               </Nav.Item>
